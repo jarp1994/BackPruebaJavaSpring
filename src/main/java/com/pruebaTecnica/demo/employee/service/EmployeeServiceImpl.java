@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pruebaTecnica.demo.employee.entity.Employee;
 import com.pruebaTecnica.demo.employee.entity.EmployeeByIdResponse;
 import com.pruebaTecnica.demo.employee.entity.EmployeeResponse;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,12 +22,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.restTemplate = new RestTemplate();
     }
 
+    @Cacheable("allEmployees")
     @Override
     public List<Employee> getAllEmployees(){
         EmployeeResponse response = restTemplate.getForObject(URL_BASE, EmployeeResponse.class);
         return response.getData();
     }
 
+    @Cacheable("EmployeeById")
     @Override
     public Employee getEmployeeById(Long id){
         String urlGetEmployeeById = URL_EMPLOYEE_BY_ID + id;
