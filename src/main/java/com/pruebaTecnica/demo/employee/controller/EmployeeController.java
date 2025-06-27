@@ -41,10 +41,12 @@ public class EmployeeController {
     @GetMapping("/employee/{id}")
     public ResponseEntity<?> getEmployeeById(@PathVariable Long id){
         Map<String, Object> response = new HashMap<>();
-        if(id == null){
-            response.put("mensaje","The employee with that id doesnt exist");
-        }
-        response.put("employee", employeeService.getEmployeeById(id));
+
+        Employee employee = employeeService.getEmployeeById(id);
+        Double salary = employeeService.calculateAnnualSalary(employee);
+
+        response.put("employee", employee);
+        response.put("anualSalary",salary);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
